@@ -7,7 +7,7 @@ ThisBuild / organizationName := "dixa"
 
 enablePlugins(AkkaGrpcPlugin)
 
-akkaGrpcGeneratedSources := Seq(AkkaGrpc.Server)
+akkaGrpcGeneratedSources := Seq(AkkaGrpc.Client)
 
 val AkkaVersion = "2.6.18"
 val AkkaHttpVersion = "10.2.7"
