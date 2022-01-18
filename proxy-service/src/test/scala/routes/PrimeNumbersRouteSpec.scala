@@ -2,7 +2,7 @@ package routes
 
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import com.dixa.routes.PrimeNumbersRoute.primeNumbersRoute
+import com.dixa.route.PrimeNumbersRoute.primeNumbersRoute
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 

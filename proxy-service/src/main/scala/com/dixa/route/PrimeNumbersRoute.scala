@@ -1,4 +1,4 @@
-package com.dixa.routes
+package com.dixa.route
 
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
