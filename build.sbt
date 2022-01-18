@@ -14,11 +14,13 @@ lazy val `proxy-server` =
 lazy val `prime-number-server` =
   project
     .in(file("prime-number-server"))
+    .settings(commonDependencies)
 
 lazy val proto =
   project
     .in(file("proto"))
 
-lazy val commonDependencies = Seq(
-  scalaTest % Test
-)
+lazy val commonDependencies =
+  libraryDependencies ++= Seq(
+    scalaTest % Test
+  )
