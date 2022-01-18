@@ -2,11 +2,15 @@ package com.dixa
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
+import akka.grpc.GrpcClientSettings
 import akka.http.scaladsl.Http
-import com.dixa.route.PrimeNumbersRoute.primeNumbersRoute
+import com.dixa.route.PrimeNumbersRoute
+import com.dixa.service.PrimeNumbersService
 import com.typesafe.config.ConfigFactory
+import prime.PrimeNumbersServiceClient
 
-import scala.io.StdIn
+import scala.concurrent.duration.DurationInt
+import scala.util.{Failure, Success}
 
 object ProxyServer extends App {
   implicit val system           = ActorSystem(Behaviors.empty, "ProxyServer")
@@ -17,11 +21,28 @@ object ProxyServer extends App {
   val host = config.getString("host")
   val port = config.getInt("port")
 
-  val binding = Http().newServerAt(host, port).bind(primeNumbersRoute)
+  val primeServerHost = config.getString("prime-server.host")
+  val primeServerPort = config.getInt("prime-server.port")
 
-  system.log.info(s"Server running on ${host}:${port}\nPress RETURN to stop...")
-  StdIn.readLine()
-  binding
-    .flatMap(_.unbind())
-    .onComplete(_ => system.terminate())
+  val clientSettings = GrpcClientSettings.connectToServiceAt(primeServerHost, primeServerPort).withTls(false)
+
+  val client = PrimeNumbersServiceClient(clientSettings)
+
+  val primeNumbersService = new PrimeNumbersService(client)
+
+  val primeNumbersRoute = new PrimeNumbersRoute(primeNumbersService)
+
+  val bound = Http()
+    .newServerAt(host, port)
+    .bind(primeNumbersRoute.routes)
+    .map(_.addToCoordinatedShutdown(5.seconds))
+
+  bound.onComplete {
+    case Success(binding) =>
+      val address = binding.localAddress
+      system.log.info("server running on: {}:{}", address.getHostString, address.getPort)
+    case Failure(ex) =>
+      system.log.error("Failed to start web server, terminating system", ex)
+      system.terminate()
+  }
 }

@@ -9,6 +9,8 @@ import com.typesafe.config.ConfigFactory
 import prime.PrimeNumbersServiceHandler
 
 import scala.concurrent.Future
+import scala.concurrent.duration.DurationInt
+import scala.util.{Failure, Success}
 
 object PrimeNumberServer extends App {
 
@@ -29,9 +31,17 @@ object PrimeNumberServer extends App {
     PrimeNumbersServiceHandler(new GrpcPrimeNumberService(getPrimeNumbersService))
 
   // final http server binding
-  val binding = Http().newServerAt(host, port).bind(service)
+  val bound = Http()
+    .newServerAt(host, port)
+    .bind(service)
+    .map(_.addToCoordinatedShutdown(5.seconds))
 
-  binding.foreach { binding =>
-    system.log.info(s"gRPC server running on: ${binding.localAddress}")
+  bound.onComplete {
+    case Success(binding) =>
+      val address = binding.localAddress
+      system.log.info("gRPC server running on: {}:{}", address.getHostString, address.getPort)
+    case Failure(ex) =>
+      system.log.error("Failed to bind gRPC endpoint, terminating system", ex)
+      system.terminate()
   }
 }
