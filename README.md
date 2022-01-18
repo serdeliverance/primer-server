@@ -1,6 +1,17 @@
 # primer-server
 
-TDD + Hexagonal Architecture (ports and adapters pattern) 
+## Stack
+
+- Scala 2.13
+- Akka HTTP
+- Akka Streams
+- Grpc
+
+## Architectural components
+
+- `prime-number-server`: serve prime numbers through gRPC. It was implemented using TDD + Hexagonal Architecture (ports and adapters pattern)
+
+- `proxy-server`: middleware which acts as a client entrypoint to the system. Because it is simpler than the previous services, its layering is simpler (having just a route and service layers). It also was implemented using TDD.
 
 ## Notes
 
