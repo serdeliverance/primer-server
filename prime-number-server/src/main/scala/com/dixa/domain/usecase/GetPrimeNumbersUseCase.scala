@@ -1,11 +1,10 @@
 package com.dixa.domain.usecase
 
 import com.dixa.domain.entity.{DomainError, InvalidNumberError}
-import com.dixa.domain.functions.NumericFunctions.{isPrime, generateNaturalNumbersUntilN}
+import com.dixa.domain.functions.NumericFunctions.{generateNaturalNumbersUntilN, isPrime}
+import com.dixa.port.in.GetPrimeNumbersService
 
-import scala.annotation.tailrec
-
-case class GetPrimeNumbersUseCase() {
+case class GetPrimeNumbersUseCase() extends GetPrimeNumbersService {
 
   def getPrimeNumbers(n: Int): Either[DomainError, LazyList[Int]] =
     if (n <= 0) Left(InvalidNumberError(n))
