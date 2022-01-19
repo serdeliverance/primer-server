@@ -37,4 +37,6 @@ Then, you can make request to the proxy server:
 
 ## Disclaimer
 
-- the original idea was to generate a multimodule project (proxy-service, prime-number-service and proto) to share common dependencies and having a single point of management of the entire project, but I got stuck with `akka-grpc` plugin (I had issues generating stubs in a multimodule project). So, I finally ended up using different independent projects.
+- The original idea was to generate a multimodule project (proxy-service, prime-number-service and proto) to share common dependencies and having a single point of management of the entire project, but I got stuck with `akka-grpc` plugin (I had issues generating stubs in a multimodule project). So, I finally ended up using different independent projects.
+
+- Sorry for the last trailing comma-space (", ") when requesting the endpoint.
