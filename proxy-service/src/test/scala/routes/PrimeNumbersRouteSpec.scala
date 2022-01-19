@@ -24,7 +24,8 @@ class PrimeNumbersRouteSpec extends AnyWordSpec with Matchers with ScalatestRout
 
       // FIXME
       Get("/prime/7") ~> subject.routes ~> {
-        status mustBe OK
+//        status mustBe OK
+        ???
       }
     }
 
@@ -34,7 +35,8 @@ class PrimeNumbersRouteSpec extends AnyWordSpec with Matchers with ScalatestRout
       when(primeNumbersService.getPrimeNumbers(-1)).thenReturn(Left(InvalidParameterError("number", "-1")))
 
       Get("/prime/-1") ~> subject.routes ~> {
-        status mustBe BadRequest
+//        status mustBe BadRequest
+        ???
       }
     }
   }
