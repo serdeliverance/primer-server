@@ -5,13 +5,13 @@
 - Scala 2.13
 - Akka HTTP
 - Akka Streams
-- Grpc
+- gRPC
 
 ## Architectural components
 
-- `prime-number-server`: serve prime numbers through gRPC. It was implemented using TDD + Hexagonal Architecture (ports and adapters pattern)
+- `prime-number-server`: serve prime numbers through gRPC. It was implemented using `TDD` + `Hexagonal Architecture` (ports and adapters pattern)
 
-- `proxy-server`: middleware which acts as a client entrypoint to the system. Because it simplicity, its layering is simpler than the previous service (having just a route and service layers). It also was implemented using TDD.
+- `proxy-server`: middleware which acts as a client entrypoint to the system. Because it simplicity, its layering is simpler than the previous service (having just a route and service layers). It also was implemented using `TDD`.
 
 ## Notes
 
